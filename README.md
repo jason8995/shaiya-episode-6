@@ -32,6 +32,8 @@ To build a stable library that replaces pet.dll and exceeds its capabilities.
 
 [Teos](https://github.com/ShaiyaTeos/Teos)
 
-[Imgeneus](https://github.com/vbasik08/SH.Imgeneus)
-
 [Parsec](https://github.com/matigramirez/Parsec)
+
+## Contributors
+
+Please don't submit a pull request unless I invite you to contribute. I can't disable the pull request tab to prevent unwanted contributions.
