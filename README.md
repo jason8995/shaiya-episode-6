@@ -10,9 +10,15 @@ Visual Studio 2022
 
 C++ 23
 
-## Documentation
+## Prerequisites
 
-Please read the [wiki](https://github.com/kurtekat/shaiya-episode-6/wiki) before getting started.
+[Microsoft Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x86.exe)
+
+[Microsoft DirectX SDK (June 2010)](https://www.microsoft.com/en-us/download/details.aspx?id=6812)
+
+## Injection
+
+Cheat Engine isn't guaranteed to work for everyone. It's not an issue with the application or the libraries. The libraries have an export defined in the main headers.
 
 ## Inspiration
 
@@ -21,10 +27,6 @@ Please read the [wiki](https://github.com/kurtekat/shaiya-episode-6/wiki) before
 [EricDutra-16](https://www.elitepvpers.com/forum/shaiya-pserver-guides-releases/4189218-release-wip-ep6-source-code.html)
 
 [shen1l](https://www.elitepvpers.com/forum/shaiya-pserver-guides-releases/3669922-release-ep6-itemmall-fixed.html)
-
-## Goal
-
-To build a stable library that replaces pet.dll and exceeds its capabilities.
 
 ## References
 
