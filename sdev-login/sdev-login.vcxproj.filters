@@ -33,6 +33,12 @@
     <ClInclude Include="resources\resource.h">
       <Filter>include</Filter>
     </ClInclude>
+    <ClInclude Include="include\shaiya\include\SDBDispatchClient.h">
+      <Filter>include\shaiya\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\shaiya\include\CUserCrypto.h">
+      <Filter>include\shaiya\include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\dllmain.cpp">
@@ -45,6 +51,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="include\shaiya\src\SConnection.cpp">
+      <Filter>include\shaiya\src</Filter>
+    </ClCompile>
+    <ClCompile Include="include\shaiya\src\SDatabase.cpp">
       <Filter>include\shaiya\src</Filter>
     </ClCompile>
   </ItemGroup>

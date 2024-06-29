@@ -1,24 +1,25 @@
+#pragma warning(disable: 28159) // GetTickCount
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-
-#include <include/main.h>
-#include <include/shaiya/packets/0200.h>
-#include <include/shaiya/packets/0500.h>
-#include <include/shaiya/include/CGameData.h>
-#include <include/shaiya/include/CItem.h>
-#include <include/shaiya/include/CNpcData.h>
-#include <include/shaiya/include/CObject.h>
-#include <include/shaiya/include/CUser.h>
-#include <util/include/util.h>
+#include <shaiya/include/item/ItemEffect.h>
+#include <shaiya/include/network/game/incoming/0500.h>
+#include <shaiya/include/network/game/outgoing/0200.h>
+#include <util/util.h>
+#include "include/main.h"
+#include "include/shaiya/include/CItem.h"
+#include "include/shaiya/include/CNpcData.h"
+#include "include/shaiya/include/CObject.h"
+#include "include/shaiya/include/CUser.h"
+#include "include/shaiya/include/ItemInfo.h"
 using namespace shaiya;
 
 namespace item_effect
 {
-    int handler(CUser* user, CItem* item, CGameData::ItemEffect effect, std::uint8_t bag, std::uint8_t slot)
+    int handler(CUser* user, CItem* item, ItemEffect effect, uint8_t bag, uint8_t slot)
     {
         switch (effect)
         {
-        case CGameData::ItemEffect::TownTeleportScroll:
+        case ItemEffect::TownTeleportScroll:
         {
             NpcGateKeeper* gateKeeper = nullptr;
 
@@ -55,13 +56,13 @@ namespace item_effect
             if (!gateKeeper)
                 return 0;
 
-            user->recallMapId = gateKeeper->gate[user->townScrollGateIndex].mapId;
-            user->recallPos = gateKeeper->gate[user->townScrollGateIndex].pos;
+            user->recallMapId = gateKeeper->gates[user->townScrollGateIndex].mapId;
+            user->recallPos = gateKeeper->gates[user->townScrollGateIndex].pos;
             user->recallType = UserRecallType::TownTeleportScroll;
-            user->recallTime = GetTickCount() + 5000;
+            user->recallTick = GetTickCount() + 5000;
 
-            ItemCastOutgoing packet{ 0x221, user->id };
-            CObject::PSendViewCombat(user, &packet, sizeof(ItemCastOutgoing));
+            ItemCastOutgoing outgoing(user->id);
+            CObject::PSendViewCombat(user, &outgoing, sizeof(ItemCastOutgoing));
             return 1;
         }
         default:
@@ -71,10 +72,10 @@ namespace item_effect
 
     void town_scroll_handler(CUser* user, ItemTownScrollIncoming* incoming)
     {
-        if (user->stateType == UserStateType::Death)
+        if (user->status == UserStatus::Death)
             return;
 
-        if (user->dbAgentDisconnect || user->debuffTypeDetail)
+        if (user->connectionCloseType || user->debuffTypeDetail)
             return;
 
         if (!incoming->bag || incoming->bag > user->bagsUnlocked || incoming->slot >= max_inventory_slot)
@@ -84,7 +85,7 @@ namespace item_effect
         if (!item)
             return;
 
-        if (item->itemInfo->effect != CGameData::ItemEffect::TownTeleportScroll)
+        if (item->itemInfo->effect != ItemEffect::TownTeleportScroll)
             return;
 
         if (incoming->gateIndex > 2)
@@ -105,10 +106,10 @@ namespace item_effect
         if (!item)
             return 0;
 
-        if (item->itemInfo->realType != CGameData::ItemRealType::Teleportation)
+        if (item->itemInfo->realType != ItemRealType::Teleportation)
             return 0;
 
-        if (item->itemInfo->effect != CGameData::ItemEffect::TownTeleportScroll)
+        if (item->itemInfo->effect != ItemEffect::TownTeleportScroll)
             return 0;
 
         CUser::ItemUseNSend(user, user->recallItemBag, user->recallItemSlot, false);

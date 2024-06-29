@@ -1,27 +1,23 @@
 #include <array>
 #include <map>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-#include <include/main.h>
-#include <include/shaiya/include/CUser.h>
-#include <sdev/include/shaiya/packets/dbAgent/0400.h>
-#include <sdev/include/shaiya/include/SConnection.h>
-#include <util/include/util.h>
+#include <shaiya/include/common/SConnection.h>
+#include <shaiya/include/network/dbAgent/outgoing/0400.h>
+#include <util/util.h>
+#include "include/main.h"
+#include "include/shaiya/include/CUser.h"
 using namespace shaiya;
 
 namespace character_list
 {
+    using UserId = unsigned long;
     inline std::map<UserId, std::array<Equipment0403, 5>> g_equipment{};
 
     void send(CUser* user, bool sendCountry)
     {
-        constexpr int packet_size_without_list = 8;
-
-        UserCharListOutgoing packet{};
-        packet.userId = user->userId;
-        packet.sendCountry = sendCountry;
-        packet.characterCount = 0;
+        DBAgentCharListOutgoing outgoing{};
+        outgoing.userId = user->userId;
+        outgoing.sendCountry = sendCountry;
+        outgoing.characterCount = 0;
 
         for (const auto& character : user->characterList)
         {
@@ -58,16 +54,16 @@ namespace character_list
 
             character0403.cloakBadge = character.cloakBadge;
             character0403.charName = character.name;
-            packet.characterList[packet.characterCount] = character0403;
+            outgoing.characterList[outgoing.characterCount] = character0403;
 
-            ++packet.characterCount;
+            ++outgoing.characterCount;
         }
 
         if (!user->connection)
             return;
 
-        int length = packet_size_without_list + (packet.characterCount * sizeof(Character0403));
-        SConnection::Send(user->connection, &packet, length);
+        int length = outgoing.size_without_list() + (outgoing.characterCount * sizeof(Character0403));
+        SConnection::Send(user->connection, &outgoing, length);
 
         g_equipment.erase(user->userId);
     }
@@ -78,9 +74,9 @@ namespace character_list
         g_equipment.insert_or_assign(user->userId, equipment);
     }
 
-    void assign_equipment(CUser* user, std::uint8_t characterSlot, std::uint8_t equipmentSlot, std::uint8_t type, std::uint8_t typeId)
+    void assign_equipment(CUser* user, uint8_t characterSlot, uint8_t equipmentSlot, uint8_t type, uint8_t typeId)
     {
-        if (characterSlot >= user->characterList.size() || equipmentSlot >= sizeof(Equipment0403) / 2)
+        if (characterSlot >= user->characterList.size() || equipmentSlot >= max_equipment_slot)
             return;
 
         if (auto it = g_equipment.find(user->userId); it != g_equipment.end())
@@ -167,5 +163,5 @@ void hook::character_list()
     util::detour((void*)0x4223F7, naked_0x4223F7, 7);
 
     // DBCharacter::LoadCharacterList
-    util::write_memory((void*)0x42220B, sizeof(Equipment0403) / 2, 1);
+    util::write_memory((void*)0x42220B, max_equipment_slot, 1);
 }

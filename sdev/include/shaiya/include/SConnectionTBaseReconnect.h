@@ -1,12 +1,14 @@
 #pragma once
-#include <include/shaiya/common.h>
+#include <shaiya/include/common.h>
 
 namespace shaiya
 {
+    struct SConnection;
+
     #pragma pack(push, 1)
     struct SConnectionTBaseReconnect
     {
-        static void Send(void* clientTo, void* buf, int len);
+        static void Send(SConnection* connection, void* buf, int len);
     };
     #pragma pack(pop)
 }

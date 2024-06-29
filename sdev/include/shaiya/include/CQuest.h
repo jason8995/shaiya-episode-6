@@ -1,6 +1,6 @@
 #pragma once
-#include <include/shaiya/common.h>
-#include <include/shaiya/include/SNode.h>
+#include <shaiya/include/common.h>
+#include <shaiya/include/common/SNode.h>
 
 namespace shaiya
 {
@@ -10,8 +10,16 @@ namespace shaiya
     struct CQuest
     {
         SNode node;            //0x00
-        UINT16 id;             //0x08
-        PAD(22);
+        ULONG id;              //0x08
+        bool success;          //0x0C
+        PAD(3);
+        DWORD addTick;         //0x10
+        DWORD delay;           //0x14
+        DWORD expireTick;      //0x18
+        UINT8 count1;          //0x1C
+        UINT8 count2;          //0x1D
+        UINT8 count3;          //0x1E
+        PAD(1);
         QuestInfo* questInfo;  //0x20
         // 0x24
     };

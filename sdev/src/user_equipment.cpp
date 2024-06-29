@@ -1,29 +1,27 @@
 #include <array>
 #include <ranges>
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
-
-#include <include/main.h>
-#include <include/shaiya/packets/0300.h>
-#include <include/shaiya/include/CGameData.h>
-#include <include/shaiya/include/CItem.h>
-#include <include/shaiya/include/CUser.h>
-#include <include/shaiya/include/SConnection.h>
-#include <include/shaiya/include/Synergy.h>
-#include <util/include/util.h>
+#include <shaiya/include/common/SConnection.h>
+#include <shaiya/include/item/ItemType.h>
+#include <shaiya/include/network/game/outgoing/0300.h>
+#include <util/util.h>
+#include "include/main.h"
+#include "include/shaiya/include/CItem.h"
+#include "include/shaiya/include/CUser.h"
+#include "include/shaiya/include/ItemInfo.h"
+#include "include/shaiya/include/Synergy.h"
 using namespace shaiya;
 
 namespace user_equipment
 {
-    bool enable_slot(CGameData::ItemInfo* itemInfo, EquipmentSlot slot)
+    bool enable_slot(ItemInfo* itemInfo, EquipmentSlot slot)
     {
-        switch (static_cast<CGameData::ItemType>(itemInfo->type))
+        switch (static_cast<ItemType>(itemInfo->type))
         {
-        case CGameData::ItemType::Pet:
+        case ItemType::Pet:
             return slot == EquipmentSlot::Pet;
-        case CGameData::ItemType::Wings:
+        case ItemType::Wings:
             return slot == EquipmentSlot::Wings;
-        case CGameData::ItemType::Costume:
+        case ItemType::Costume:
             return slot == EquipmentSlot::Costume;
         default:
             break;
@@ -54,10 +52,8 @@ namespace user_equipment
 
     void send_inspect(CUser* user, CUser* target)
     {
-        constexpr int packet_size_without_list = 3;
-
-        GetInfoInspectOutgoing packet{};
-        packet.itemCount = 0;
+        GetInfoInspectOutgoing outgoing{};
+        outgoing.itemCount = 0;
 
         for (const auto& [slot, item] : std::views::enumerate(
             std::as_const(target->inventory[0])))
@@ -65,7 +61,7 @@ namespace user_equipment
             if (!item)
                 continue;
 
-            if (std::size_t(slot) >= packet.itemList.size())
+            if (std::cmp_greater_equal(slot, outgoing.itemList.size()))
                 break;
 
             if (slot < EquipmentSlot::Wings)
@@ -80,14 +76,14 @@ namespace user_equipment
 
                 item0307.gems = item->gems;
                 item0307.craftName = item->craftName;
-                packet.itemList[packet.itemCount] = item0307;
+                outgoing.itemList[outgoing.itemCount] = item0307;
 
-                ++packet.itemCount;
+                ++outgoing.itemCount;
             }
         }
 
-        int length = packet_size_without_list + (packet.itemCount * sizeof(Item0307));
-        SConnection::Send(&user->connection, &packet, length);
+        int length = outgoing.size_without_list() + (outgoing.itemCount * sizeof(Item0307));
+        SConnection::Send(&user->connection, &outgoing, length);
     }
 }
 
@@ -311,8 +307,8 @@ void hook::user_equipment()
     util::write_memory((void*)0x47395E, &a00, 2);
     util::write_memory((void*)0x47398F, &a00, 2);
 
-    // change 0x1A6 (user->itemQuality) to 0x5D0C
-    std::array<std::uint8_t, 2> a01{ 0x0C, 0x5D };
+    // change 0x1A6 (user->itemQuality) to 0x5DC0
+    std::array<std::uint8_t, 2> a01{ 0xC0, 0x5D };
 
     // CUser::ItemDropByUserDeath
     util::write_memory((void*)0x46754C, &a01, 2);
