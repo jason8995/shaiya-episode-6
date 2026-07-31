@@ -205,14 +205,15 @@ void Configuration::LoadChaoticSquareData()
             if (vec.empty())
                 continue;
 
-            std::vector<int> recipeList;
-            std::transform(vec.cbegin(), vec.cend(), std::back_inserter(recipeList), ext::string::to_int());
-            std::sort(recipeList.begin(), recipeList.end());
+            std::vector<int> ids;
+            std::transform(vec.cbegin(), vec.cend(), std::back_inserter(ids), 
+                [](const auto& str) { return std::stoi(str); });
+            std::sort(ids.begin(), ids.end());
 
             ChaoticSquare square{};
             square.itemId = itemId;
 
-            for (const auto& id : recipeList)
+            for (const auto& id : ids)
             {
                 auto it = recipes.find(id);
                 if (it == recipes.end())

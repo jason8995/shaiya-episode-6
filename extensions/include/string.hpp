@@ -6,7 +6,6 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
-#include <vector>
 
 namespace ext {
 namespace string {
@@ -318,34 +317,6 @@ namespace string {
     {
         return split<Container>(str, std::basic_string_view(sep), std::numeric_limits<int>::max());
     }
-
-} // namespace string
-} // namespace ext
-
-namespace ext {
-namespace string {
-
-    struct to_int
-    {
-        explicit to_int(int base = 10)
-            : m_base(base)
-        {
-        }
-
-        int operator()(const std::string& str) const
-        {
-            return std::stoi(str, nullptr, m_base);
-        }
-
-        int operator()(const std::wstring& str) const
-        {
-            return std::stoi(str, nullptr, m_base);
-        }
-
-    private:
-
-        int m_base;
-    };
 
 } // namespace string
 } // namespace ext
