@@ -19,6 +19,9 @@ namespace shaiya
         static Ini Parse(std::wifstream& stream);
         static Ini Parse(const std::wstring& rawData);
         static Ini Parse(std::wstringstream& rawData);
+        static Ini Parse(std::ifstream& stream);
+        static Ini Parse(const std::string& rawData);
+        static Ini Parse(std::stringstream& rawData);
 
         std::wstring GetValueOrDefault(const std::wstring& key, const std::wstring& defaultValue) const;
         int GetValueOrDefault(const std::wstring& key, int defaultValue) const;

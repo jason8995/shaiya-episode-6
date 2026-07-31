@@ -45,7 +45,7 @@ void Configuration::LoadBattlefieldMoveData()
         SAFile::Read(buffer.data(), 1, buffer.size(), handle);
         SAFile::Close(handle);
 
-        auto ini = Ini::Parse(ext::string::to_wstring(buffer));
+        auto ini = Ini::Parse(buffer);
         auto count = ini.GetValueOrDefault(L"BATTLEFIELD_INFO:BATTLEFIELD_COUNT", 0);
         if (count <= 0)
             return;

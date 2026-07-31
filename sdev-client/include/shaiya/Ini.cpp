@@ -1,5 +1,6 @@
 #include <filesystem>
 #include <fstream>
+#include <locale>
 #include <map>
 #include <sstream>
 #include <string>
@@ -24,6 +25,32 @@ Ini Ini::Parse(const std::wstring& rawData)
 {
     std::wstringstream iss(rawData);
     return Parse(iss);
+}
+
+Ini Ini::Parse(std::ifstream& stream)
+{
+    std::stringstream iss;
+    iss << stream.rdbuf();
+    return Parse(iss);
+}
+
+Ini Ini::Parse(const std::string& rawData)
+{
+    std::stringstream iss(rawData);
+    return Parse(iss);
+}
+
+Ini Ini::Parse(std::stringstream& rawData)
+{
+    std::string narrow(rawData.str());
+    auto size = narrow.size();
+
+    // Source: DUB1401 (GitHub)
+    std::wstring wide(size, 0);
+    std::use_facet<std::ctype<std::wstring::value_type>>(std::locale())
+        .widen(narrow.data(), narrow.data() + size, wide.data());
+
+    return Parse(wide);
 }
 
 // Source: Microsoft.Extensions.Configuration.Ini

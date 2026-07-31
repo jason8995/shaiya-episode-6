@@ -347,14 +347,5 @@ namespace string {
         int m_base;
     };
 
-    // Source: DUB1401 (GitHub)
-    inline std::wstring to_wstring(const std::string& str, const std::locale& loc = std::locale())
-    {
-        std::wstring output(str.size(), 0);
-        std::use_facet<std::ctype<std::wstring::value_type>>(loc)
-            .widen(str.data(), str.data() + str.size(), output.data());
-        return output;
-    }
-
 } // namespace string
 } // namespace ext
