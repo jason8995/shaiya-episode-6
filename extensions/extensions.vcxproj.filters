@@ -10,9 +10,6 @@
     <ClInclude Include="include\concepts.hpp">
       <Filter>include</Filter>
     </ClInclude>
-    <ClInclude Include="include\filesystem.hpp">
-      <Filter>include</Filter>
-    </ClInclude>
     <ClInclude Include="include\functional.hpp">
       <Filter>include</Filter>
     </ClInclude>

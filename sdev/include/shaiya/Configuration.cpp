@@ -7,7 +7,6 @@
 #include <vector>
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
-#include <extensions/include/filesystem.hpp>
 #include <extensions/include/functional.hpp>
 #include <extensions/include/string.hpp>
 #include <shaiya/include/network/game/RewardItemUnit.h>
@@ -37,7 +36,8 @@ void Configuration::LoadBattlefieldMoveData()
     try
     {
         std::filesystem::path path(m_root);
-        ext::filesystem::path::combine(path, "Data", "BattleFieldMoveInfo.ini");
+        path.append("Data");
+        path.append("BattleFieldMoveInfo.ini");
         if (!std::filesystem::exists(path))
             return;
 
@@ -130,7 +130,8 @@ void Configuration::LoadChaoticSquareData()
     try
     {
         std::filesystem::path path(m_root);
-        ext::filesystem::path::combine(path, "Data", "ChaoticSquare.ini");
+        path.append("Data");
+        path.append("ChaoticSquare.ini");
         if (!std::filesystem::exists(path))
             return;
 
@@ -250,7 +251,8 @@ void Configuration::LoadItemSetData()
     try
     {
         std::filesystem::path path(m_root);
-        ext::filesystem::path::combine(path, "Data", "SetItem.ini");
+        path.append("Data");
+        path.append("SetItem.ini");
         if (!std::filesystem::exists(path))
             return;
 
@@ -348,7 +350,8 @@ void Configuration::LoadOnlineTimePrizeData()
     try
     {
         std::filesystem::path path(m_root);
-        ext::filesystem::path::combine(path, "Data", "OnlineTimePrize.ini");
+        path.append("Data");
+        path.append("OnlineTimePrize.ini");
         if (!std::filesystem::exists(path))
             return;
 
@@ -405,7 +408,8 @@ void Configuration::LoadMapData()
     try
     {
         std::filesystem::path path(m_root);
-        ext::filesystem::path::combine(path, "Data", "Map.ini");
+        path.append("Data");
+        path.append("Map.ini");
         if (!std::filesystem::exists(path))
             return;
 

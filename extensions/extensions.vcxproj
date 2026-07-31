@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\concepts.hpp" />
-    <ClInclude Include="include\filesystem.hpp" />
     <ClInclude Include="include\functional.hpp" />
     <ClInclude Include="include\string.hpp" />
     <ClInclude Include="include\type_traits.hpp" />
