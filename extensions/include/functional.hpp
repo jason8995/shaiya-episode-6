@@ -10,7 +10,8 @@ namespace ext {
         {
         }
 
-        constexpr bool operator()(const T& lhs) const
+        template<class U>
+        constexpr bool operator()(const U& lhs) const
         {
             return lhs == m_rhs;
         }
