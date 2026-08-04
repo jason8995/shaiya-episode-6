@@ -161,7 +161,7 @@ void Configuration::LoadChaoticSquareData()
             auto chance = ini.GetValueOrDefault(key2, 0);
             auto key3 = std::format(L"Recipe_{}:Result", num);
             auto result = ini.GetValueOrDefault(key3, L"");
-            auto vec = ext::string::split<std::vector>(result, L',', 3);
+            auto vec = ext::split<std::vector>(result, L',', 3);
             if (vec.size() != 3)
                 continue;
 
@@ -176,7 +176,7 @@ void Configuration::LoadChaoticSquareData()
             {
                 auto key = std::format(L"Recipe_{}:Material_{}", num, i + 1);
                 auto value = ini.GetValueOrDefault(key, L"");
-                auto vec = ext::string::split<std::vector>(value, L',', 3);
+                auto vec = ext::split<std::vector>(value, L',', 3);
                 vec.resize(3, L"0");
 
                 recipe.materialType[i] = std::stoi(vec[0]);
@@ -191,7 +191,7 @@ void Configuration::LoadChaoticSquareData()
         {
             auto key = std::format(L"Square_{}:ItemCtId", num);
             auto value = ini.GetValueOrDefault(key, L"");
-            auto vec = ext::string::split<std::vector>(value, L',', 2);
+            auto vec = ext::split<std::vector>(value, L',', 2);
             if (vec.size() != 2)
                 continue;
 
@@ -201,7 +201,7 @@ void Configuration::LoadChaoticSquareData()
 
             key = std::format(L"Square_{}:RecipeList", num);
             value = ini.GetValueOrDefault(key, L"");
-            vec = ext::string::split<std::vector>(value, L',');
+            vec = ext::split<std::vector>(value, L',');
             if (vec.empty())
                 continue;
 
@@ -230,7 +230,7 @@ void Configuration::LoadChaoticSquareData()
             {
                 auto key = std::format(L"Square_{}:Fail_Item_{}", num, i + 1);
                 auto value = ini.GetValueOrDefault(key, L"");
-                auto vec = ext::string::split<std::vector>(value, L',', 3);
+                auto vec = ext::split<std::vector>(value, L',', 3);
                 vec.resize(3, L"0");
 
                 square.results[i].type = std::stoi(vec[0]);

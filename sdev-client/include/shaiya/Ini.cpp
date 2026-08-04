@@ -62,7 +62,7 @@ Ini Ini::Parse(std::wstringstream& rawData)
 
     while (std::getline(rawData, rawLine))
     {
-        auto line = ext::string::trim_copy(rawLine);
+        auto line = ext::trim_copy(rawLine);
         if (line.empty())
             continue;
 
@@ -71,7 +71,7 @@ Ini Ini::Parse(std::wstringstream& rawData)
 
         if (line.starts_with(L'[') && line.ends_with(L']'))
         {
-            section = ext::string::trim_copy(line.substr(1, line.length() - 2));
+            section = ext::trim_copy(line.substr(1, line.length() - 2));
             section += L':';
             continue;
         }
@@ -81,8 +81,8 @@ Ini Ini::Parse(std::wstringstream& rawData)
             continue;
 
         // { Section:Key, Value }
-        auto key = section + ext::string::trim_copy(line.substr(0, offset));
-        auto value = ext::string::trim_copy(line.substr(offset + 1));
+        auto key = section + ext::trim_copy(line.substr(0, offset));
+        auto value = ext::trim_copy(line.substr(offset + 1));
 
         if (value.length() > 1 && value.starts_with(L'"') && value.ends_with(L'"'))
             value = value.substr(1, value.length() - 2);

@@ -9,7 +9,6 @@
 #include "functional.hpp"
 
 namespace ext {
-namespace string {
 
     template<class Char, class UnaryPred>
     inline void ltrim_if(std::basic_string<Char>& str, UnaryPred pred)
@@ -239,11 +238,9 @@ namespace string {
             });
     }
 
-} // namespace string
 } // namespace ext
 
 namespace ext {
-namespace string {
 
     template<template<typename...> class Container, class Char>
     inline auto split(const std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> sep, int max)
@@ -291,5 +288,4 @@ namespace string {
         return split<Container>(str, std::basic_string_view(sep), std::numeric_limits<int>::max());
     }
 
-} // namespace string
 } // namespace ext
