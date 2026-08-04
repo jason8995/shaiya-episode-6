@@ -91,19 +91,19 @@ Removes leading elements that are equal to the specified character.
 
 ```cpp
 template<class Char>
-inline void ltrim(std::basic_string<Char>& str, const Char rhs);
+inline void ltrim(std::basic_string<Char>& str, const Char ch);
 ```
 
 Removes leading elements that are equal to any of the specified characters.
 
 ```cpp
 template<class Char>
-inline void ltrim(std::basic_string<Char>& str, const Char* rhs);
+inline void ltrim(std::basic_string<Char>& str, const Char* ptr);
 ```
 
 ```cpp
 template<class Char>
-inline void ltrim(std::basic_string<Char>& str, const std::basic_string_view<Char> rhs);
+inline void ltrim(std::basic_string<Char>& str, const std::basic_string_view<Char> view);
 ```
 
 ## `rtrim`
@@ -119,19 +119,19 @@ Removes trailing elements that are equal to the specified character.
 
 ```cpp
 template<class Char>
-inline void rtrim(std::basic_string<Char>& str, const Char rhs);
+inline void rtrim(std::basic_string<Char>& str, const Char ch);
 ```
 
 Removes trailing elements that are equal to any of the specified characters.
 
 ```cpp
 template<class Char>
-inline void rtrim(std::basic_string<Char>& str, const Char* rhs);
+inline void rtrim(std::basic_string<Char>& str, const Char* ptr);
 ```
 
 ```cpp
 template<class Char>
-inline void rtrim(std::basic_string<Char>& str, const std::basic_string_view<Char> rhs);
+inline void rtrim(std::basic_string<Char>& str, const std::basic_string_view<Char> view);
 ```
 
 ## `trim`
@@ -147,19 +147,19 @@ Removes leading and trailing elements that are equal to the specified character.
 
 ```cpp
 template<class Char>
-inline void trim(std::basic_string<Char>& str, const Char rhs);
+inline void trim(std::basic_string<Char>& str, const Char ch);
 ```
 
 Removes leading and trailing elements that are equal to any of the specified characters.
 
 ```cpp
 template<class Char>
-inline void trim(std::basic_string<Char>& str, const Char* rhs);
+inline void trim(std::basic_string<Char>& str, const Char* ptr);
 ```
 
 ```cpp
 template<class Char>
-inline void trim(std::basic_string<Char>& str, const std::basic_string_view<Char> rhs);
+inline void trim(std::basic_string<Char>& str, const std::basic_string_view<Char> view);
 ```
 
 ## `ltrim_if`
@@ -202,19 +202,19 @@ Removes leading elements that are equal to the specified character.
 
 ```cpp
 template<class Char>
-inline auto ltrim_copy(const std::basic_string<Char>& str, const Char rhs);
+inline auto ltrim_copy(const std::basic_string<Char>& str, const Char ch);
 ```
 
 Removes leading elements that are equal to any of the specified characters.
 
 ```cpp
 template<class Char>
-inline auto ltrim_copy(const std::basic_string<Char>& str, const Char* rhs);
+inline auto ltrim_copy(const std::basic_string<Char>& str, const Char* ptr);
 ```
 
 ```cpp
 template<class Char>
-inline auto ltrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<Char> rhs);
+inline auto ltrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<Char> view);
 ```
 
 ## `rtrim_copy`
@@ -230,19 +230,19 @@ Removes trailing elements that are equal to the specified character.
 
 ```cpp
 template<class Char>
-inline auto rtrim_copy(const std::basic_string<Char>& str, const Char rhs);
+inline auto rtrim_copy(const std::basic_string<Char>& str, const Char ch);
 ```
 
 Removes trailing elements that are equal to any of the specified characters.
 
 ```cpp
 template<class Char>
-inline auto rtrim_copy(const std::basic_string<Char>& str, const Char* rhs);
+inline auto rtrim_copy(const std::basic_string<Char>& str, const Char* ptr);
 ```
 
 ```cpp
 template<class Char>
-inline auto rtrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<Char> rhs);
+inline auto rtrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<Char> view);
 ```
 
 ## `trim_copy`
@@ -258,19 +258,19 @@ Removes leading and trailing elements that are equal to the specified character.
 
 ```cpp
 template<class Char>
-inline auto trim_copy(const std::basic_string<Char>& str, const Char rhs);
+inline auto trim_copy(const std::basic_string<Char>& str, const Char ch);
 ```
 
 Removes leading and trailing elements that are equal to any of the specified characters.
 
 ```cpp
 template<class Char>
-inline auto trim_copy(const std::basic_string<Char>& str, const Char* rhs);
+inline auto trim_copy(const std::basic_string<Char>& str, const Char* ptr);
 ```
 
 ```cpp
 template<class Char>
-inline auto trim_copy(const std::basic_string<Char>& str, const std::basic_string_view<Char> rhs);
+inline auto trim_copy(const std::basic_string<Char>& str, const std::basic_string_view<Char> view);
 ```
 
 ## `ltrim_copy_if`
