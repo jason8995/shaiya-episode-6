@@ -6,70 +6,7 @@
 #include <string>
 #include <string_view>
 #include <type_traits>
-
-namespace ext {
-namespace string {
-namespace detail {
-
-    template<class Char>
-    struct equal_to
-    {
-        explicit equal_to(const Char rhs)
-            : m_rhs(rhs)
-        {
-        }
-
-        constexpr bool operator()(const Char lhs) const noexcept
-        {
-            return lhs == m_rhs;
-        }
-
-    private:
-
-        Char m_rhs;
-    };
-
-    template<class Char>
-    struct equal_to_any_of
-    {
-        explicit equal_to_any_of(const std::basic_string_view<Char> sv)
-            : m_sv(sv)
-        {
-        }
-
-        constexpr bool operator()(const Char ch) const
-        {
-            return std::any_of(
-                std::cbegin(m_sv), std::cend(m_sv), equal_to(ch));
-        }
-
-    private:
-
-        std::basic_string_view<Char> m_sv;
-    };
-
-    // Source: Boost.Algorithm
-    struct is_space
-    {
-        explicit is_space(const std::locale& loc = std::locale())
-            : m_loc(loc)
-        {
-        }
-
-        template<class Char>
-        bool operator()(const Char lhs) const
-        {
-            return std::isspace<Char>(lhs, m_loc);
-        }
-
-    private:
-
-        std::locale m_loc;
-    };
-
-} // namespace detail
-} // namespace string
-} // namespace ext
+#include "functional.hpp"
 
 namespace ext {
 namespace string {
@@ -100,79 +37,97 @@ namespace string {
     template<class Char>
     inline void ltrim(std::basic_string<Char>& str, const std::locale& loc = std::locale())
     {
-        ltrim_if(str, detail::is_space(loc));
+        ltrim_if(str, [&](const Char ch) {
+            return std::isspace<Char>(ch, loc);
+            });
     }
 
     template<class Char>
-    inline void ltrim(std::basic_string<Char>& str, const Char rhs)
+    inline void ltrim(std::basic_string<Char>& str, const Char ch)
     {
-        ltrim_if(str, detail::equal_to(rhs));
+        ltrim_if(str, ext::unary_equal_to(ch));
     }
 
     template<class Char>
-    inline void ltrim(std::basic_string<Char>& str, const Char* const rhs)
+    inline void ltrim(std::basic_string<Char>& str, const Char* const ptr)
     {
-        ltrim_if(str, detail::equal_to_any_of(std::basic_string_view(rhs)));
+        ltrim_if(str, [=](const Char ch) {
+            return std::ranges::any_of(std::basic_string_view(ptr), ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
-    inline void ltrim(std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> rhs)
+    inline void ltrim(std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> view)
     {
-        ltrim_if(str, detail::equal_to_any_of(rhs));
+        ltrim_if(str, [=](const Char ch) {
+            return std::ranges::any_of(view, ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
     inline void rtrim(std::basic_string<Char>& str, const std::locale& loc = std::locale())
     {
-        rtrim_if(str, detail::is_space(loc));
+        rtrim_if(str, [&](const Char ch) {
+            return std::isspace<Char>(ch, loc);
+            });
     }
 
     template<class Char>
-    inline void rtrim(std::basic_string<Char>& str, const Char rhs)
+    inline void rtrim(std::basic_string<Char>& str, const Char ch)
     {
-        rtrim_if(str, detail::equal_to(rhs));
+        rtrim_if(str, ext::unary_equal_to(ch));
     }
 
     template<class Char>
-    inline void rtrim(std::basic_string<Char>& str, const Char* const rhs)
+    inline void rtrim(std::basic_string<Char>& str, const Char* const ptr)
     {
-        rtrim_if(str, detail::equal_to_any_of(std::basic_string_view(rhs)));
+        rtrim_if(str, [=](const Char ch) {
+            return std::ranges::any_of(std::basic_string_view(ptr), ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
-    inline void rtrim(std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> rhs)
+    inline void rtrim(std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> view)
     {
-        rtrim_if(str, detail::equal_to_any_of(rhs));
+        rtrim_if(str, [=](const Char ch) {
+            return std::ranges::any_of(view, ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
     inline void trim(std::basic_string<Char>& str, const std::locale& loc = std::locale())
     {
-        trim_if(str, detail::is_space(loc));
+        trim_if(str, [&](const Char ch) {
+            return std::isspace<Char>(ch, loc);
+            });
     }
 
     template<class Char>
-    inline void trim(std::basic_string<Char>& str, const Char rhs)
+    inline void trim(std::basic_string<Char>& str, const Char ch)
     {
-        trim_if(str, detail::equal_to(rhs));
+        trim_if(str, ext::unary_equal_to(ch));
     }
 
     template<class Char>
-    inline void trim(std::basic_string<Char>& str, const Char* const rhs)
+    inline void trim(std::basic_string<Char>& str, const Char* const ptr)
     {
-        trim_if(str, detail::equal_to_any_of(std::basic_string_view(rhs)));
+        trim_if(str, [=](const Char ch) {
+            return std::ranges::any_of(std::basic_string_view(ptr), ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
-    inline void trim(std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> rhs)
+    inline void trim(std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> view)
     {
-        trim_if(str, detail::equal_to_any_of(rhs));
+        trim_if(str, [=](const Char ch) {
+            return std::ranges::any_of(view, ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char, class UnaryPred>
     inline auto ltrim_copy_if(const std::basic_string<Char>& str, UnaryPred pred)
     {
-        std::basic_string<Char> output(str);
+        std::basic_string output(str);
         ltrim_if(output, pred);
         return output;
     }
@@ -180,7 +135,7 @@ namespace string {
     template<class Char, class UnaryPred>
     inline auto rtrim_copy_if(const std::basic_string<Char>& str, UnaryPred pred)
     {
-        std::basic_string<Char> output(str);
+        std::basic_string output(str);
         rtrim_if(output, pred);
         return output;
     }
@@ -188,7 +143,7 @@ namespace string {
     template<class Char, class UnaryPred>
     inline auto trim_copy_if(const std::basic_string<Char>& str, UnaryPred pred)
     {
-        std::basic_string<Char> output(str);
+        std::basic_string output(str);
         rtrim_if(output, pred);
         ltrim_if(output, pred);
         return output;
@@ -197,73 +152,91 @@ namespace string {
     template<class Char>
     inline auto ltrim_copy(const std::basic_string<Char>& str, const std::locale& loc = std::locale())
     {
-        return ltrim_copy_if(str, detail::is_space(loc));
+        return ltrim_copy_if(str, [&](const Char ch) {
+            return std::isspace<Char>(ch, loc);
+            });
     }
 
     template<class Char>
-    inline auto ltrim_copy(const std::basic_string<Char>& str, const Char rhs)
+    inline auto ltrim_copy(const std::basic_string<Char>& str, const Char ch)
     {
-        return ltrim_copy_if(str, detail::equal_to(rhs));
+        return ltrim_copy_if(str, ext::unary_equal_to(ch));
     }
 
     template<class Char>
-    inline auto ltrim_copy(const std::basic_string<Char>& str, const Char* const rhs)
+    inline auto ltrim_copy(const std::basic_string<Char>& str, const Char* const ptr)
     {
-        return ltrim_copy_if(str, detail::equal_to_any_of(std::basic_string_view(rhs)));
+        return ltrim_copy_if(str, [=](const Char ch) {
+            return std::ranges::any_of(std::basic_string_view(ptr), ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
-    inline auto ltrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> rhs)
+    inline auto ltrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> view)
     {
-        return ltrim_copy_if(str, detail::equal_to_any_of(rhs));
+        return ltrim_copy_if(str, [=](const Char ch) {
+            return std::ranges::any_of(view, ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
     inline auto rtrim_copy(const std::basic_string<Char>& str, const std::locale& loc = std::locale())
     {
-        return rtrim_copy_if(str, detail::is_space(loc));
+        return rtrim_copy_if(str, [&](const Char ch) {
+            return std::isspace<Char>(ch, loc);
+            });
     }
 
     template<class Char>
-    inline auto rtrim_copy(const std::basic_string<Char>& str, const Char rhs)
+    inline auto rtrim_copy(const std::basic_string<Char>& str, const Char ch)
     {
-        return rtrim_copy_if(str, detail::equal_to(rhs));
+        return rtrim_copy_if(str, ext::unary_equal_to(ch));
     }
 
     template<class Char>
-    inline auto rtrim_copy(const std::basic_string<Char>& str, const Char* const rhs)
+    inline auto rtrim_copy(const std::basic_string<Char>& str, const Char* const ptr)
     {
-        return rtrim_copy_if(str, detail::equal_to_any_of(std::basic_string_view(rhs)));
+        return rtrim_copy_if(str, [=](const Char ch) {
+            return std::ranges::any_of(std::basic_string_view(ptr), ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
-    inline auto rtrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> rhs)
+    inline auto rtrim_copy(const std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> view)
     {
-        return rtrim_copy_if(str, detail::equal_to_any_of(rhs));
+        return rtrim_copy_if(str, [=](const Char ch) {
+            return std::ranges::any_of(view, ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
     inline auto trim_copy(const std::basic_string<Char>& str, const std::locale& loc = std::locale())
     {
-        return trim_copy_if(str, detail::is_space(loc));
+        return trim_copy_if(str, [&](const Char ch) {
+            return std::isspace<Char>(ch, loc);
+            });
     }
 
     template<class Char>
-    inline auto trim_copy(const std::basic_string<Char>& str, const Char rhs)
+    inline auto trim_copy(const std::basic_string<Char>& str, const Char ch)
     {
-        return trim_copy_if(str, detail::equal_to(rhs));
+        return trim_copy_if(str, ext::unary_equal_to(ch));
     }
 
     template<class Char>
-    inline auto trim_copy(const std::basic_string<Char>& str, const Char* const rhs)
+    inline auto trim_copy(const std::basic_string<Char>& str, const Char* const ptr)
     {
-        return trim_copy_if(str, detail::equal_to_any_of(std::basic_string_view(rhs)));
+        return trim_copy_if(str, [=](const Char ch) {
+            return std::ranges::any_of(std::basic_string_view(ptr), ext::unary_equal_to(ch));
+            });
     }
 
     template<class Char>
-    inline auto trim_copy(const std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> rhs)
+    inline auto trim_copy(const std::basic_string<Char>& str, const std::basic_string_view<std::type_identity_t<Char>> view)
     {
-        return trim_copy_if(str, detail::equal_to_any_of(rhs));
+        return trim_copy_if(str, [=](const Char ch) {
+            return std::ranges::any_of(view, ext::unary_equal_to(ch));
+            });
     }
 
 } // namespace string
