@@ -6,15 +6,7 @@ Visual Studio 2019
 
 C++ 20
 
-# String
-
-| Container        | Literal    | Char    | 
-|------------------|------------|---------|
-| `std::string`    | `"abc"s`   | `'x'`   |
-| `std::wstring`   | `L"abc"s`  | `L'x'`  |
-| `std::u8string`  | `u8"abc"s` | `u8'x'` |
-| `std::u16string` | `u"abc"s`  | `u'x'`  |
-| `std::u32string` | `U"abc"s`  | `U'x'`  |
+# Documentation
 
 ## `split`
 
@@ -67,7 +59,7 @@ inline auto split(const std::basic_string<Char>& str, const Char sep);
 int main(int argc, char** argv)
 {
     std::string str("1,2,3,4");
-    auto set = ext::string::split<std::set>(str, ",");
+    auto set = ext::split<std::set>(str, ",");
     
     for (const auto& key : set)
     {
@@ -299,6 +291,16 @@ Removes leading and trailing elements for which the unary predicate returns true
 template<class Char, class UnaryPred>
 inline auto trim_copy_if(const std::basic_string<Char>& str, UnaryPred pred);
 ```
+
+# Notes
+
+| Container        | Literal    | Char    | 
+|------------------|------------|---------|
+| `std::string`    | `"abc"s`   | `'x'`   |
+| `std::wstring`   | `L"abc"s`  | `L'x'`  |
+| `std::u8string`  | `u8"abc"s` | `u8'x'` |
+| `std::u16string` | `u"abc"s`  | `u'x'`  |
+| `std::u32string` | `U"abc"s`  | `U'x'`  |
 
 # Inspiration
 
